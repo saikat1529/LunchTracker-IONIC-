@@ -1,24 +1,28 @@
 <ion-view title="Dashboard" id="page5">
-    <ion-content overflow-scroll="true" padding="false" class="has-header">
+    <ion-content overflow-scroll="true" padding="false" class="has-header" ng-controller="MyController">
+	    <ion-refresher
+		    pulling-text="Pull to refresh..."
+		    on-refresh="doRefresh()">
+		</ion-refresher>
         <div class="card" ng-app="myApp" ng-controller="dashboardCtrl">
 			<div class="item item-divider">
-				{{conditions}}
+				<strong>Today's Menu</strong>
 			</div>
 			<div class="item item-text-wrap">
 				<ion-list>
-				  <ion-radio ng-model="choice" ng-value="'A'" id="menu_one">{{value}}</ion-radio>
-				  <ion-radio ng-model="choice" ng-value="'B'" id="menu_two">Beef Curry</ion-radio>
-				  <ion-checkbox ng-model="filter.blue">Add Foil for extra BDT 10.00</ion-checkbox>
-				  <button class="button button-block button-positive"><strong>Place Order</strong></button>
+				  <ion-radio ng-model="menu" value="{{menu_one_id}}">{{menu_one_name ? menu_one_name : 'No menu found'}}</ion-radio>
+				  <ion-radio ng-model="menu" value="{{menu_two_id}}">{{menu_two_name ? menu_two_name : 'No menu found'}}</ion-radio>
+				  <ion-checkbox ng-model="foil" ng-true-value="'yes'" ng-false-value="'no'">Add Foil for extra BDT 10.00</ion-checkbox>
+				  <button class="button button-block button-positive" ng-click="submit()" ng-controller="dashboard_submit"><strong>Place Order</strong></button>
 				</ion-list>
 			</div>
 		</div>
-		<div class="card">
+		<div class="card" ng-app="myApp" ng-controller="dashboardCtrl">
 			<div class="item item-divider">
-				<strong>Total Due:</strong>
+				<strong>Total Due</strong>
 			</div>
 			<div class="item item-text-wrap">
-				<h1 style="text-align: center">BDT 350.00</h1>
+				<h1 style="text-align: center">{{total_due}}</h1>
 			</div>
 		</div>
     </ion-content>
