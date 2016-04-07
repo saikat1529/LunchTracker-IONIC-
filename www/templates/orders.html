@@ -1,40 +1,75 @@
 <ion-view title="Orders" id="page7">
-    <ion-content overflow-scroll="true" padding="true" class="has-header">
-        <div class="list card">
-            <div class="item item-divider">01-04-2016</div>
-            <div class="item item-body">
-                <div id="orders-markdown14" style="color:#000000;">
-                    <p>Chicken Curry + Rice + Daal</p>
+    <ion-content overflow-scroll="true" class="has-header" ng-controller="ordersCtrl">
+        <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="doRefresh()">
+        </ion-refresher>
+        <ion-list>
+            <ion-item ng-repeat="item in values" style="padding: 0px">
+                <div class="card"  style="padding: 0px">
+                      <div class="item item-divider">
+                        <strong>Date: {{item.date}}</strong>
+                      </div>
+                      <div class="item item-text-wrap" style="padding-left: 20px; padding-top: 5px; padding-bottom: 5px">
+                        <h2><strong>{{item.name}}</strong></h2>
+                        <h4>Foil: {{item.foil}}</h4>
+                        <h4><strong>Price: {{item.price}}</strong></h4>
+                      </div>
+                      <div class="item item-divider">
+                        <p>Status: {{item.status}}</p>
+                      </div>
                 </div>
+            </ion-item>
+        </ion-list>
+        <!-- <div class="list">
+
+            <div class="card">
+                  <div class="item item-divider">
+                    I'm a Header in a Card!
+                  </div>
+                  <div class="item item-text-wrap">
+                    This is a basic Card with some text.
+                  </div>
+                  <div class="item item-divider">
+                    I'm a Footer in a Card!
+                  </div>
             </div>
-            <div class="item item-divider">Price: BDT 70.00</div>
-        </div>
-        <div class="list card">
-            <div class="item item-divider">01-04-2016</div>
-            <div class="item item-body">
-                <div id="orders-markdown15" style="color:#000000;">
-                    <p>Chicken Curry + Rice + Daal</p>
-                </div>
+
+          <div class="card">
+                  <div class="item item-divider">
+                    I'm a Header in a Card!
+                  </div>
+                  <div class="item item-text-wrap">
+                    This is a basic Card with some text.
+                  </div>
+                  <div class="item item-divider">
+                    I'm a Footer in a Card!
+                  </div>
             </div>
-            <div class="item item-divider">Price: BDT 70.00</div>
-        </div>
-        <div class="list card">
-            <div class="item item-divider">01-04-2016</div>
-            <div class="item item-body">
-                <div id="orders-markdown16" style="color:#000000;">
-                    <p>Chicken Curry + Rice + Daal</p>
-                </div>
+
+          <div class="card">
+                  <div class="item item-divider">
+                    I'm a Header in a Card!
+                  </div>
+                  <div class="item item-text-wrap">
+                    This is a basic Card with some text.
+                  </div>
+                  <div class="item item-divider">
+                    I'm a Footer in a Card!
+                  </div>
             </div>
-            <div class="item item-divider">Price: BDT 70.00</div>
-        </div>
-        <div class="list card">
-            <div class="item item-divider">01-04-2016</div>
-            <div class="item item-body">
-                <div id="orders-markdown17" style="color:#000000;">
-                    <p>Chicken Curry + Rice + Daal</p>
-                </div>
+
+          <div class="card">
+                  <div class="item item-divider">
+                    I'm a Header in a Card!
+                  </div>
+                  <div class="item item-text-wrap">
+                    This is a basic Card with some text.
+                  </div>
+                  <div class="item item-divider">
+                    I'm a Footer in a Card!
+                  </div>
             </div>
-            <div class="item item-divider">Price: BDT 70.00</div>
-        </div>
+        </div> -->
     </ion-content>
 </ion-view>

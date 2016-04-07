@@ -1,15 +1,23 @@
 <ion-view title="Payment" id="page8">
-    <ion-content overflow-scroll="true" padding="true" class="has-header">
-        <div class="list card">
-            <div class="item item-divider">Total Paid</div>
-            <div class="item item-body">
-                <h1 id="payment-heading8" style="color:#000000;">BDT 2500.00</h1>
+    <ion-content overflow-scroll="true" padding="true" class="has-header" ng-controller="paymentCtrl">
+        <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="card" ng-app="myApp">
+            <div class="item item-divider">
+                <strong>Total Paid</strong>
+            </div>
+            <div class="item item-text-wrap">
+                <h1 style="text-align: center">{{total_paid}}</h1>
             </div>
         </div>
-        <div class="list card">
-            <div class="item item-divider">Total Unpaid</div>
-            <div class="item item-body">
-                <h1 id="payment-heading9" style="color:#000000;">BDT 280.00</h1>
+        <div class="card" ng-app="myApp">
+            <div class="item item-divider">
+                <strong>Total Due</strong>
+            </div>
+            <div class="item item-text-wrap">
+                <h1 style="text-align: center">{{total_due}}</h1>
             </div>
         </div>
     </ion-content>

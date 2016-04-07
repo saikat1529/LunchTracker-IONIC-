@@ -43,7 +43,17 @@ angular.module('app.controllers', [])
           title: 'Order Placed Successfully',
         });
         mypop.then(function(res){
-          console.log('Tapped!', res);
+          $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid=6')
+         .success(function(newItems) {
+           $scope.items = newItems.count;
+           $scope.total_due = "BDT " + newItems.count;
+           $ionicHistory.clearCache();
+            $state.go($state.current, {}, { reload: true });
+         })
+         .finally(function() {
+           // Stop the ion-refresher from spinning
+           $scope.$broadcast('scroll.refreshComplete');
+         });
         });
         //$timeout(function() {mypop.close();},3000);
       });
@@ -106,23 +116,23 @@ angular.module('app.controllers', [])
   //alert($scope.menu_one_id);
 }])
 
-.controller('MyController', function($scope, $http) {
-  $scope.items = [1,2,3];
-  $scope.doRefresh = function() {
-    $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid=6')
-     .success(function(newItems) {
-       $scope.items = newItems.count;
-       $scope.total_due = "BDT " + newItems.count;
-       alert($scope.total_due);
-       $ionicHistory.clearCache();
-        $state.go($state.current, {}, { reload: true });
-     })
-     .finally(function() {
-       // Stop the ion-refresher from spinning
-       $scope.$broadcast('scroll.refreshComplete');
-     });
-  };
-})
+// .controller('MyController', function($scope, $http) {
+//   $scope.items = [1,2,3];
+//   $scope.doRefresh = function() {
+//     $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid=6')
+//      .success(function(newItems) {
+//        $scope.items = newItems.count;
+//        $scope.total_due = "BDT " + newItems.count;
+//        alert($scope.total_due);
+//        $ionicHistory.clearCache();
+//         $state.go($state.current, {}, { reload: true });
+//      })
+//      .finally(function() {
+//        // Stop the ion-refresher from spinning
+//        $scope.$broadcast('scroll.refreshComplete');
+//      });
+//   };
+// })
 
 
 // .controller('dashboard_submit',['$scope', '$http', '$ionicPopup', '$timeout', function($scope, $http, $ionicPopup, $timeout) { 
@@ -152,20 +162,20 @@ angular.module('app.controllers', [])
 // }])
 
 
-.controller('PlaylistsCtrl', function($scope, $ionicPopup, $timeout) {
-  $scope.data = {}
+// .controller('PlaylistsCtrl', function($scope, $ionicPopup, $timeout) {
+//   $scope.data = {}
 
-  // Triggered on a button click, or some other target
-  $scope.showPopup = function() {
-    var alertPopup = $ionicPopup.alert({
-      title: 'Dont eat that!',
-      template: 'It might taste good'
-    });
-    alertPopup.then(function(res) {
-      console.log('Thank you for not eating my delicious ice cream cone');
-    });
-  };
-})
+//   // Triggered on a button click, or some other target
+//   $scope.showPopup = function() {
+//     var alertPopup = $ionicPopup.alert({
+//       title: 'Dont eat that!',
+//       template: 'It might taste good'
+//     });
+//     alertPopup.then(function(res) {
+//       console.log('Thank you for not eating my delicious ice cream cone');
+//     });
+//   };
+// })
 
 // .controller('dashboardCtrl-due', function($scope, $http) {
 // 	// $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid=6').then(function(resp) {
@@ -178,13 +188,71 @@ angular.module('app.controllers', [])
 //  //  })
 // })
    
-.controller('ordersCtrl', function($scope) {
-
-})
+.controller('ordersCtrl', ['$scope', '$http', function($scope, $http) {
+  $http.get('http://192.168.5.202/lunchmaker/api/users_order.php?uid=6')
+  .then(function(resp) {
+    $scope.values = resp.data.orders;
+    $ionicHistory.clearCache();
+    $state.go($state.current, {}, { reload: true });
+    // For JSON responses, resp.data contains the result
+  }, function(err) {
+    // err.status will contain the status code
+  })
+  $scope.doRefresh = function() {
+    $http.get('http://192.168.5.202/lunchmaker/api/users_order.php?uid=6')
+      .then(function(resp) {
+        $scope.values = resp.data.orders;
+        // For JSON responses, resp.data contains the result
+      }, function(err) {
+        // err.status will contain the status code
+      })
+     .finally(function() {
+       // Stop the ion-refresher from spinning
+       $scope.$broadcast('scroll.refreshComplete');
+     });
+  };
+}])
    
-.controller('paymentCtrl', function($scope) {
-
-})
+.controller('paymentCtrl',  ['$scope', '$http', function($scope, $http) {
+  $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid=6').then(function(resp) {
+  $scope.total_due = "BDT "+resp.data.count;
+    // For JSON responses, resp.data contains the result
+  }, function(err) {
+    console.error('ERR', err);
+  $scope.val = "Error";
+    // err.status will contain the status code
+  })
+  $http.get('http://192.168.5.202/lunchmaker/api/total_paid.php?uid=6').then(function(resp) {
+  $scope.total_paid = "BDT "+resp.data.count;
+    // For JSON responses, resp.data contains the result
+  }, function(err) {
+    console.error('ERR', err);
+  $scope.val = "Error";
+    // err.status will contain the status code
+  })
+  $scope.doRefresh = function() {
+    $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid=6').then(function(resp) {
+  $scope.total_due = "BDT "+resp.data.count;
+    // For JSON responses, resp.data contains the result
+  }, function(err) {
+    console.error('ERR', err);
+  $scope.val = "Error";
+    // err.status will contain the status code
+  })
+  $http.get('http://192.168.5.202/lunchmaker/api/total_paid.php?uid=6').then(function(resp) {
+  $scope.total_paid = "BDT "+resp.data.count;
+    // For JSON responses, resp.data contains the result
+  }, function(err) {
+    console.error('ERR', err);
+  $scope.val = "Error";
+    // err.status will contain the status code
+  })
+     .finally(function() {
+       // Stop the ion-refresher from spinning
+       $scope.$broadcast('scroll.refreshComplete');
+     });
+  };
+}])
    
 .controller('logOutCtrl', function($scope) {
 
