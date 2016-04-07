@@ -1,10 +1,10 @@
 <ion-view title="Dashboard" id="page5">
-    <ion-content overflow-scroll="true" padding="false" class="has-header" ng-controller="MyController">
+    <ion-content overflow-scroll="true" padding="false" class="has-header" ng-controller="dashboardCtrl">
 	    <ion-refresher
 		    pulling-text="Pull to refresh..."
 		    on-refresh="doRefresh()">
 		</ion-refresher>
-        <div class="card" ng-app="myApp" ng-controller="dashboardCtrl">
+        <div class="card" ng-app="myApp">
 			<div class="item item-divider">
 				<strong>Today's Menu</strong>
 			</div>
@@ -12,12 +12,12 @@
 				<ion-list>
 				  <ion-radio ng-model="menu" value="{{menu_one_id}}">{{menu_one_name ? menu_one_name : 'No menu found'}}</ion-radio>
 				  <ion-radio ng-model="menu" value="{{menu_two_id}}">{{menu_two_name ? menu_two_name : 'No menu found'}}</ion-radio>
-				  <ion-checkbox ng-model="foil" ng-true-value="'yes'" ng-false-value="'no'">Add Foil for extra BDT 10.00</ion-checkbox>
-				  <button class="button button-block button-positive" ng-click="submit()" ng-controller="dashboardCtrl"><strong>Place Order</strong></button>
+				  <ion-checkbox ng-model="foil" ng-true-value="'yes'" ng-false-value="'no'" ng-checked="false">Add Foil for extra BDT 10.00</ion-checkbox>
+				  <button class="button button-block button-positive" ng-click="submit()"><strong>Place Order</strong></button>
 				</ion-list>
 			</div>
 		</div>
-		<div class="card" ng-app="myApp" ng-controller="dashboardCtrl">
+		<div class="card" ng-app="myApp">
 			<div class="item item-divider">
 				<strong>Total Due</strong>
 			</div>

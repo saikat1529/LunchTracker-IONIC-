@@ -2,13 +2,13 @@ angular.module('app.controllers', [])
      
 .controller('dashboardCtrl',['$scope', '$http', '$ionicPopup', '$timeout', function($scope, $http, $ionicPopup, $timeout) {
 
+  $scope.foil = "no";
 	$http.get('http://192.168.5.202/lunchmaker/api/todays_menu.php')
   .then(function(resp) {
 	$scope.menu_one_name = resp.data.menus[0].name+" ("+resp.data.menus[0].price+")";
 	$scope.menu_one_id = resp.data.menus[0].id;
 	$scope.menu_two_name = resp.data.menus[1].name+" ("+resp.data.menus[1].price+")";
 	$scope.menu_two_id = resp.data.menus[1].id;
-  $scope.menu = $scope.menu_one_id;
     // For JSON responses, resp.data contains the result
   }, function(err) {
     console.error('ERR', err);
@@ -22,26 +22,73 @@ angular.module('app.controllers', [])
   $scope.val = "Error";
     // err.status will contain the status code
   })
+  // $scope.radioChange = function(item) {
+  //   $scope.menu_id = item;
+  //   alert(item);
+  //   alert($scope.menu_id);
+  // } 
   $scope.submit = function(){
-    var req = {
-     method: 'POST',
-     url: 'http://192.168.5.202/lunchmaker/api/place_order.php',
-     headers: {
-       'Content-Type': undefined
-     },
-     data: { uid: '6', mid: $scope.menu, foil: $scope.foil, status: 'unpaid' }
+    if(angular.isDefined($scope.menu)){
+        var req = {
+       method: 'POST',
+       url: 'http://192.168.5.202/lunchmaker/api/place_order.php',
+       headers: {
+         'Content-Type': undefined
+       },
+       data: { uid: '6', mid: $scope.menu, foil: $scope.foil, status: 'unpaid' }
+      }
+      $http(req)
+      .then(function(responses){
+        var mypop = $ionicPopup.alert({
+          title: 'Order Placed Successfully',
+        });
+        mypop.then(function(res){
+          console.log('Tapped!', res);
+        });
+        //$timeout(function() {mypop.close();},3000);
+      });
     }
-    $http(req)
-    .then(function(responses){
+    else{
       var mypop = $ionicPopup.alert({
-        title: 'Order Placed Successfully',
-      });
-      mypop.then(function(res){
-        $state.go('app.fooDestinationView')
-        console.log('Tapped!', res);
-      });
-      //$timeout(function() {mypop.close();},3000);
-    });
+          title: 'please select your menu',
+        });
+        mypop.then(function(res){
+          console.log('Tapped!', res);
+        });
+    }
+    // var req = {
+    //  method: 'POST',
+    //  url: 'http://192.168.5.202/lunchmaker/api/place_order.php',
+    //  headers: {
+    //    'Content-Type': undefined
+    //  },
+    //  data: { uid: '6', mid: $scope.menu, foil: $scope.foil, status: 'unpaid' }
+    // }
+    // $http(req)
+    // .then(function(responses){
+    //   var mypop = $ionicPopup.alert({
+    //     title: 'Order Placed Successfully',
+    //   });
+    //   mypop.then(function(res){
+    //     $state.go('app.fooDestinationView')
+    //     console.log('Tapped!', res);
+    //   });
+    //   //$timeout(function() {mypop.close();},3000);
+    // });
+  };
+
+  $scope.doRefresh = function() {
+    $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid=6')
+     .success(function(newItems) {
+       $scope.items = newItems.count;
+       $scope.total_due = "BDT " + newItems.count;
+       $ionicHistory.clearCache();
+        $state.go($state.current, {}, { reload: true });
+     })
+     .finally(function() {
+       // Stop the ion-refresher from spinning
+       $scope.$broadcast('scroll.refreshComplete');
+     });
   };
   // $scope.doRefresh = function() {
   //   $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid=6')
