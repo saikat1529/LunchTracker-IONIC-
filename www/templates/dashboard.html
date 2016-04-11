@@ -10,8 +10,8 @@
 			</div>
 			<div class="item item-text-wrap">
 				<ion-list>
-				  <ion-radio ng-model="menu" value="{{menu_one_id}}">{{menu_one_name ? menu_one_name : 'No menu found'}}</ion-radio>
-				  <ion-radio ng-model="menu" value="{{menu_two_id}}">{{menu_two_name ? menu_two_name : 'No menu found'}}</ion-radio>
+				  <ion-radio ng-model="menu" value="{{menu_one_id ? menu_one_id : 0}}">{{menu_one_name ? menu_one_name : 'No menu found'}}</ion-radio>
+				  <ion-radio ng-model="menu" value="{{menu_two_id ? menu_two_id : 0}}">{{menu_two_name ? menu_two_name : 'No menu found'}}</ion-radio>
 				  <ion-checkbox class="checkbox checkbox-dark" ng-model="foil" ng-true-value="'yes'" ng-false-value="'no'" ng-checked="false">Add Foil for extra BDT 10.00</ion-checkbox>
 				  <button class="button button-block button-dark" ng-click="submit()"><strong>Place Order</strong></button>
 				</ion-list>

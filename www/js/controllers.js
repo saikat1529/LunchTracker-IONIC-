@@ -1,11 +1,30 @@
-angular.module('app.controllers', [])
-     
-.controller('dashboardCtrl',['$scope', '$http', '$ionicPopup', '$state', '$ionicHistory', function($scope, $http, $ionicPopup, $state, $ionicHistory) {
+// angular.module('coolapp-constants',[])
+// .constant('config', {
+//   apiUrl: 'saikat'
+// });
 
+// var URI_PATH = {
+//     api: "saikat"
+// };
+
+// var cool = angular.module('coolapp-constants',[]);
+// cool.value('config', {
+//     appName: 'My App',
+//     appVersion: 2.0,
+//     apiUrl: 'http://www.google.com?api'
+// });
+
+
+var my_app = angular.module('app.controllers', []);
+
+my_app.constant("apiUrl","http://192.168.5.202/lunchmaker/api/");
+     
+my_app.controller('dashboardCtrl',['$scope', '$http', '$ionicPopup', '$state', '$ionicHistory','apiUrl', function($scope, $http, $ionicPopup, $state, $ionicHistory, apiUrl) {
+  console.log("API: "+apiUrl);
   $scope.foil = "no";
   var user_id = window.localStorage.getItem('id');
   console.log(user_id);
-  $http.get('http://192.168.5.202/lunchmaker/api/todays_menu.php')
+  $http.get(apiUrl+'todays_menu.php')
   .then(function(resp) {
   console.log(resp);
 	$scope.menu_one_name = resp.data.menus[0].name+" ("+resp.data.menus[0].price+")";
@@ -17,7 +36,7 @@ angular.module('app.controllers', [])
     console.error('ERR', err);
     // err.status will contain the status code
   })
-  $http.get('http://192.168.5.202/lunchmaker/api/check_order.php?uid='+user_id)
+  $http.get(apiUrl+'check_order.php?uid='+user_id)
   .then(function(resp){
     $scope.orderValue = resp.data.placed_order;
     if($scope.orderValue=='yes'){
@@ -27,7 +46,7 @@ angular.module('app.controllers', [])
       $scope.statusVal = true;
     }
   })
-  $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid='+user_id).then(function(resp) {
+  $http.get(apiUrl+'total_unpaid.php?uid='+user_id).then(function(resp) {
   $scope.total_due = "BDT "+resp.data.count;
     // For JSON responses, resp.data contains the result
   }, function(err) {
@@ -42,7 +61,7 @@ angular.module('app.controllers', [])
   // } 
   $scope.submit = function(){
     user_id = window.localStorage.getItem('id');
-    $http.get('http://192.168.5.202/lunchmaker/api/check_order.php?uid='+user_id)
+    $http.get(apiUrl+'check_order.php?uid='+user_id)
     .then(function(resp){
       $scope.orderValue = resp.data.placed_order;
       if($scope.orderValue=='yes'){
@@ -55,71 +74,94 @@ angular.module('app.controllers', [])
         });
       }
       else{
-        if(angular.isDefined($scope.menu)){
-          var req = {
-           method: 'POST',
-           url: 'http://192.168.5.202/lunchmaker/api/place_order.php',
-           headers: {
-             'Content-Type': undefined
-           },
-           data: { uid: user_id, mid: $scope.menu, foil: $scope.foil, status: 'unpaid' }
-         }
-         console.log(req);
-         $http(req)
-         .then(function(responses){
-              var mypop = $ionicPopup.alert({
-                title: 'Order Placed Successfully',
+        if($scope.menu==0){
+          var mypop = $ionicPopup.alert({
+                title: 'Invalid Menu Selected',
                 buttons: [{
                  text: '<b>Ok</b>',
                  type: 'button-dark'
                }]
              });
-              mypop.then(function(res){
-              //console.log('http://192.168.0.103/saikat/lunchtracker/api/total_unpaid.php?uid='+user_id);
-              $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid='+user_id)
-              .success(function(newItems) {
-                $scope.items = newItems.count;
-                $scope.total_due = "BDT " + newItems.count;
-                $ionicHistory.clearCache();
-                $state.go($state.current);
-              })
-              .finally(function() {
-               // Stop the ion-refresher from spinning
-               $scope.$broadcast('scroll.refreshComplete');
-             });
-              $http.get('http://192.168.5.202/lunchmaker/api/check_order.php?uid='+user_id)
-              .then(function(resp){
-                $scope.orderValue = resp.data.placed_order;
-                if($scope.orderValue=='yes'){
-                  $scope.statusVal = false;
-                }
-                else{
-                  $scope.statusVal = true;
-                }
-              });
-            });
-        //$timeout(function() {mypop.close();},3000);
-      });
         }
         else{
-          var mypop = $ionicPopup.alert({
-            title: 'please select your menu',
-            buttons: [{
-               text: '<b>Ok</b>',
-               type: 'button-dark'
-            }]
-          });
-        mypop.then(function(res){
-          console.log('Tapped!', res);
+          if(angular.isDefined($scope.menu)){
+            var req = {
+             method: 'POST',
+             url: apiUrl+'place_order.php',
+             headers: {
+               'Content-Type': undefined
+             },
+             data: { uid: user_id, mid: $scope.menu, foil: $scope.foil, status: 'unpaid' }
+           }
+           console.log(req);
+           $http(req)
+           .then(function(responses){
+                var mypop = $ionicPopup.alert({
+                  title: 'Order Placed Successfully',
+                  buttons: [{
+                   text: '<b>Ok</b>',
+                   type: 'button-dark'
+                 }]
+               });
+                mypop.then(function(res){
+                //console.log('http://192.168.0.103/saikat/lunchtracker/api/total_unpaid.php?uid='+user_id);
+                $http.get(apiUrl+'total_unpaid.php?uid='+user_id)
+                .success(function(newItems) {
+                  $scope.items = newItems.count;
+                  $scope.total_due = "BDT " + newItems.count;
+                  $ionicHistory.clearCache();
+                  $state.go($state.current);
+                })
+                .finally(function() {
+                 // Stop the ion-refresher from spinning
+                 $scope.$broadcast('scroll.refreshComplete');
+               });
+                $http.get(apiUrl+'check_order.php?uid='+user_id)
+                .then(function(resp){
+                  $scope.orderValue = resp.data.placed_order;
+                  if($scope.orderValue=='yes'){
+                    $scope.statusVal = false;
+                  }
+                  else{
+                    $scope.statusVal = true;
+                  }
+                });
+              });
+          //$timeout(function() {mypop.close();},3000);
         });
-      }
+          }
+          else{
+            var mypop = $ionicPopup.alert({
+              title: 'please select your menu',
+              buttons: [{
+                 text: '<b>Ok</b>',
+                 type: 'button-dark'
+              }]
+            });
+          mypop.then(function(res){
+            console.log('Tapped!', res);
+          });
+        }
+        }
     }
   })
 };
 
   $scope.doRefresh = function() {
     user_id = window.localStorage.getItem('id');
-    $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid='+user_id)
+    $http.get(apiUrl+'todays_menu.php')
+      .then(function(resp) {
+      console.log(resp);
+      $scope.menu_one_name = resp.data.menus[0].name+" ("+resp.data.menus[0].price+")";
+      $scope.menu_one_id = resp.data.menus[0].id;
+      $scope.menu_two_name = resp.data.menus[1].name+" ("+resp.data.menus[1].price+")";
+      $scope.menu_two_id = resp.data.menus[1].id;
+        // For JSON responses, resp.data contains the result
+      }, function(err) {
+        console.error('ERR', err);
+        // err.status will contain the status code
+      })
+    $http.get(apiUrl+'total_unpaid.php?uid='+user_id)
      .success(function(newItems) {
        $scope.items = newItems.count;
        $scope.total_due = "BDT " + newItems.count;
@@ -145,7 +187,7 @@ angular.module('app.controllers', [])
 
   //$scope.menu = $scope.menu_one_id;
   //alert($scope.menu_one_id);
-}])
+}]);
 
 // .controller('MyController', function($scope, $http) {
 //   $scope.items = [1,2,3];
@@ -219,9 +261,9 @@ angular.module('app.controllers', [])
 //  //  })
 // })
    
-.controller('ordersCtrl', ['$scope', '$http', function($scope, $http, $ionicHistory) {
+my_app.controller('ordersCtrl', ['$scope', '$http', 'apiUrl', function($scope, $http, apiUrl) {
   var user_id = window.localStorage.getItem('id');
-  $http.get('http://192.168.5.202/lunchmaker/api/users_order.php?uid='+user_id)
+  $http.get(apiUrl+'users_order.php?uid='+user_id)
   .then(function(resp) {
     $scope.values = resp.data.orders;
     $ionicHistory.clearCache();
@@ -231,7 +273,7 @@ angular.module('app.controllers', [])
     // err.status will contain the status code
   })
   $scope.doRefresh = function() {
-    $http.get('http://192.168.5.202/lunchmaker/api/users_order.php?uid='+user_id)
+    $http.get(apiUrl+'users_order.php?uid='+user_id)
       .then(function(resp) {
         $scope.values = resp.data.orders;
         // For JSON responses, resp.data contains the result
@@ -243,11 +285,19 @@ angular.module('app.controllers', [])
        $scope.$broadcast('scroll.refreshComplete');
      });
   };
-}])
+}]);
    
-.controller('paymentCtrl',  ['$scope', '$http', function($scope, $http) {
+my_app.controller('paymentCtrl',  ['$scope', '$http','apiUrl', function($scope, $http, apiUrl) {
   var user_id = window.localStorage.getItem('id');
-  $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid='+user_id).then(function(resp) {
+  $http.get(apiUrl+'total_spent.php?uid='+user_id).then(function(resp) {
+  $scope.total_spent = "BDT "+resp.data.count;
+    // For JSON responses, resp.data contains the result
+  }, function(err) {
+    console.error('ERR', err);
+  $scope.val = "Error";
+    // err.status will contain the status code
+  })
+  $http.get(apiUrl+'total_unpaid.php?uid='+user_id).then(function(resp) {
   $scope.total_due = "BDT "+resp.data.count;
     // For JSON responses, resp.data contains the result
   }, function(err) {
@@ -255,7 +305,7 @@ angular.module('app.controllers', [])
   $scope.val = "Error";
     // err.status will contain the status code
   })
-  $http.get('http://192.168.5.202/lunchmaker/api/total_paid.php?uid='+user_id).then(function(resp) {
+  $http.get(apiUrl+'total_paid.php?uid='+user_id).then(function(resp) {
   $scope.total_paid = "BDT "+resp.data.count;
 
     // For JSON responses, resp.data contains the result
@@ -265,7 +315,15 @@ angular.module('app.controllers', [])
     // err.status will contain the status code
   })
   $scope.doRefresh = function() {
-    $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid='+user_id).then(function(resp) {
+    $http.get(apiUrl+'total_spent.php?uid='+user_id).then(function(resp) {
+    $scope.total_spent = "BDT "+resp.data.count;
+      // For JSON responses, resp.data contains the result
+    }, function(err) {
+      console.error('ERR', err);
+    $scope.val = "Error";
+      // err.status will contain the status code
+    })
+    $http.get(apiUrl+'total_unpaid.php?uid='+user_id).then(function(resp) {
   $scope.total_due = "BDT "+resp.data.count;
 
     // For JSON responses, resp.data contains the result
@@ -274,7 +332,7 @@ angular.module('app.controllers', [])
   $scope.val = "Error";
     // err.status will contain the status code
   })
-  $http.get('http://192.168.5.202/lunchmaker/api/total_paid.php?uid='+user_id).then(function(resp) {
+  $http.get(apiUrl+'total_paid.php?uid='+user_id).then(function(resp) {
   $scope.total_paid = "BDT "+resp.data.count;
     // For JSON responses, resp.data contains the result
   }, function(err) {
@@ -287,16 +345,16 @@ angular.module('app.controllers', [])
        $scope.$broadcast('scroll.refreshComplete');
      });
   };
-}])
+}]);
    
-.controller('logOutCtrl', function($scope, $state) {
+my_app.controller('logOutCtrl', function($scope, $state) {
   window.localStorage.removeItem('id');
   console.log(window.localStorage.getItem('id'));
   console.log('cleared');
   $state.go('login');
-})
+});
 
-.controller('loginCtrl',['$scope', '$http', '$ionicPopup', '$ionicHistory', '$state', function($scope, $http, $ionicPopup, $ionicHistory, $state){
+my_app.controller('loginCtrl',['$scope', '$http', '$ionicPopup', '$ionicHistory', '$state', 'apiUrl', function($scope, $http, $ionicPopup, $ionicHistory, $state, apiUrl){
   $ionicHistory.clearCache();
   var user_id = window.localStorage.getItem('id');
   console.log("User ID:"+user_id);
@@ -308,7 +366,7 @@ angular.module('app.controllers', [])
   }
   $scope.data = {};
   $scope.login = function(){
-    var login = "http://192.168.5.202/lunchmaker/api/login.php?email="+$scope.data.email+"&password="+$scope.data.password;
+    var login = apiUrl+"login.php?email="+$scope.data.email+"&password="+$scope.data.password;
     console.log(login);
     $http.get(login).then(function(resp) {
       console.log(resp.data);
@@ -363,5 +421,5 @@ angular.module('app.controllers', [])
     //   });
     // });
   }
-}])
+}]);
  
