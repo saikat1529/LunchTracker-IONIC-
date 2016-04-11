@@ -1,0 +1,29 @@
+<ion-view title="Dashboard" id="page5">
+    <ion-content overflow-scroll="true" padding="false" class="has-header" ng-controller="dashboardCtrl">
+	    <ion-refresher
+		    pulling-text="Pull to refresh..."
+		    on-refresh="doRefresh()">
+		</ion-refresher>
+        <div class="card" ng-app="myApp">
+			<div class="item item-divider" style="background: #444444; color: #ffffff;">
+				<strong>Today's Menu</strong>
+			</div>
+			<div class="item item-text-wrap">
+				<ion-list>
+				  <ion-radio ng-model="menu" value="{{menu_one_id}}">{{menu_one_name ? menu_one_name : 'No menu found'}}</ion-radio>
+				  <ion-radio ng-model="menu" value="{{menu_two_id}}">{{menu_two_name ? menu_two_name : 'No menu found'}}</ion-radio>
+				  <ion-checkbox class="checkbox checkbox-dark" ng-model="foil" ng-true-value="'yes'" ng-false-value="'no'" ng-checked="false">Add Foil for extra BDT 10.00</ion-checkbox>
+				  <button class="button button-block button-dark" ng-click="submit()"><strong>Place Order</strong></button>
+				</ion-list>
+			</div>
+		</div>
+		<div class="card" ng-app="myApp">
+			<div class="item item-divider" style="background: #444444; color: #ffffff;">
+				<strong>Total Due</strong>
+			</div>
+			<div class="item item-text-wrap">
+				<h1 style="text-align: center; color: #444444;">{{total_due}}</h1>
+			</div>
+		</div>
+    </ion-content>
+</ion-view>

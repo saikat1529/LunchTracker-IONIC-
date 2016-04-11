@@ -1,0 +1,75 @@
+<ion-view title="Orders" id="page7">
+    <ion-content overflow-scroll="true" class="has-header" ng-controller="ordersCtrl">
+        <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="doRefresh()">
+        </ion-refresher>
+        <ion-list>
+            <ion-item ng-repeat="item in values" style="padding: 0px">
+                <div class="card"  style="padding: 0px">
+                      <div class="item item-divider" style="background: #444444; color: #ffffff;">
+                        <strong>Date: {{item.date}}</strong>
+                      </div>
+                      <div class="item item-text-wrap" style="padding-left: 20px; padding-top: 5px; padding-bottom: 5px">
+                        <h2 style="color: #444444;"><strong>{{item.name}}</strong></h2>
+                        <h4 style="color: #444444;">Foil: {{item.foil}}</h4>
+                        <h4 style="color: #444444;"><strong>Price: {{item.price}}</strong></h4>
+                      </div>
+                      <div class="item item-divider" style="background: #444444; color: #ffffff;">
+                        <strong>Status: {{item.status}}</strong>
+                      </div>
+                </div>
+            </ion-item>
+        </ion-list>
+        <!-- <div class="list">
+
+            <div class="card">
+                  <div class="item item-divider">
+                    I'm a Header in a Card!
+                  </div>
+                  <div class="item item-text-wrap">
+                    This is a basic Card with some text.
+                  </div>
+                  <div class="item item-divider">
+                    I'm a Footer in a Card!
+                  </div>
+            </div>
+
+          <div class="card">
+                  <div class="item item-divider">
+                    I'm a Header in a Card!
+                  </div>
+                  <div class="item item-text-wrap">
+                    This is a basic Card with some text.
+                  </div>
+                  <div class="item item-divider">
+                    I'm a Footer in a Card!
+                  </div>
+            </div>
+
+          <div class="card">
+                  <div class="item item-divider">
+                    I'm a Header in a Card!
+                  </div>
+                  <div class="item item-text-wrap">
+                    This is a basic Card with some text.
+                  </div>
+                  <div class="item item-divider">
+                    I'm a Footer in a Card!
+                  </div>
+            </div>
+
+          <div class="card">
+                  <div class="item item-divider">
+                    I'm a Header in a Card!
+                  </div>
+                  <div class="item item-text-wrap">
+                    This is a basic Card with some text.
+                  </div>
+                  <div class="item item-divider">
+                    I'm a Footer in a Card!
+                  </div>
+            </div>
+        </div> -->
+    </ion-content>
+</ion-view>
