@@ -26,12 +26,15 @@ angular.module('app.routes', [])
     }
   })
 
+<<<<<<< HEAD
   .state('login', {
       url: '/login',
       templateUrl: 'templates/login.html',
       controller: 'loginCtrl'
   })
 
+=======
+>>>>>>> 033bd3b868ecd3c7c44126356c699d8c3bdd6f63
   .state('menu.orders', {
     url: '/orders',
     views: {
@@ -62,7 +65,11 @@ angular.module('app.routes', [])
     }
   })
 
+<<<<<<< HEAD
 $urlRouterProvider.otherwise('/login')
+=======
+$urlRouterProvider.otherwise('/side-menu21/dashboard')
+>>>>>>> 033bd3b868ecd3c7c44126356c699d8c3bdd6f63
 
   
 

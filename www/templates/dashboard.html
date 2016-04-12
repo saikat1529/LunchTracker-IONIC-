@@ -5,24 +5,43 @@
 		    on-refresh="doRefresh()">
 		</ion-refresher>
         <div class="card" ng-app="myApp">
+<<<<<<< HEAD
 			<div class="item item-divider" style="background: #444444; color: #ffffff;">
+=======
+			<div class="item item-divider">
+>>>>>>> 033bd3b868ecd3c7c44126356c699d8c3bdd6f63
 				<strong>Today's Menu</strong>
 			</div>
 			<div class="item item-text-wrap">
 				<ion-list>
+<<<<<<< HEAD
 				  <ion-radio ng-model="menu" value="{{menu_one_id ? menu_one_id : 0}}">{{menu_one_name ? menu_one_name : 'No menu found'}}</ion-radio>
 				  <ion-radio ng-model="menu" value="{{menu_two_id ? menu_two_id : 0}}">{{menu_two_name ? menu_two_name : 'No menu found'}}</ion-radio>
 				  <ion-checkbox class="checkbox checkbox-dark" ng-model="foil" ng-true-value="'yes'" ng-false-value="'no'" ng-checked="false">Add Foil for extra BDT 10.00</ion-checkbox>
 				  <button class="button button-block button-dark" ng-click="submit()"><strong>Place Order</strong></button>
+=======
+				  <ion-radio ng-model="menu" value="{{menu_one_id}}">{{menu_one_name ? menu_one_name : 'No menu found'}}</ion-radio>
+				  <ion-radio ng-model="menu" value="{{menu_two_id}}">{{menu_two_name ? menu_two_name : 'No menu found'}}</ion-radio>
+				  <ion-checkbox ng-model="foil" ng-true-value="'yes'" ng-false-value="'no'" ng-checked="false">Add Foil for extra BDT 10.00</ion-checkbox>
+				  <button class="button button-block button-positive" ng-click="submit()"><strong>Place Order</strong></button>
+>>>>>>> 033bd3b868ecd3c7c44126356c699d8c3bdd6f63
 				</ion-list>
 			</div>
 		</div>
 		<div class="card" ng-app="myApp">
+<<<<<<< HEAD
 			<div class="item item-divider" style="background: #444444; color: #ffffff;">
 				<strong>Total Due</strong>
 			</div>
 			<div class="item item-text-wrap">
 				<h1 style="text-align: center; color: #444444;">{{total_due}}</h1>
+=======
+			<div class="item item-divider">
+				<strong>Total Due</strong>
+			</div>
+			<div class="item item-text-wrap">
+				<h1 style="text-align: center">{{total_due}}</h1>
+>>>>>>> 033bd3b868ecd3c7c44126356c699d8c3bdd6f63
 			</div>
 		</div>
     </ion-content>

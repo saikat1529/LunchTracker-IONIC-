@@ -4,6 +4,7 @@ angular.module('app.services', [])
 
 }])
 
+<<<<<<< HEAD
 .factory('LoginFactory', function($http){
 	return {
 		getAllUsers: function(name, pw){
@@ -55,4 +56,9 @@ angular.module('app.services', [])
 		}
 	}
 });
+=======
+.service('BlankService', [function(){
+
+}]);
+>>>>>>> 033bd3b868ecd3c7c44126356c699d8c3bdd6f63
 

@@ -7,6 +7,7 @@
         <ion-list>
             <ion-item ng-repeat="item in values" style="padding: 0px">
                 <div class="card"  style="padding: 0px">
+<<<<<<< HEAD
                       <div class="item item-divider" style="background: #444444; color: #ffffff;">
                         <strong>Date: {{item.date}}</strong>
                       </div>
@@ -17,6 +18,18 @@
                       </div>
                       <div class="item item-divider" style="background: #444444; color: #ffffff;">
                         <strong>Status: {{item.status}}</strong>
+=======
+                      <div class="item item-divider">
+                        <strong>Date: {{item.date}}</strong>
+                      </div>
+                      <div class="item item-text-wrap" style="padding-left: 20px; padding-top: 5px; padding-bottom: 5px">
+                        <h2><strong>{{item.name}}</strong></h2>
+                        <h4>Foil: {{item.foil}}</h4>
+                        <h4><strong>Price: {{item.price}}</strong></h4>
+                      </div>
+                      <div class="item item-divider">
+                        <p>Status: {{item.status}}</p>
+>>>>>>> 033bd3b868ecd3c7c44126356c699d8c3bdd6f63
                       </div>
                 </div>
             </ion-item>
