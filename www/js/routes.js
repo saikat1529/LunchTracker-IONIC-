@@ -26,10 +26,36 @@ angular.module('app.routes', [])
     }
   })
 
+  .state('menu.settings', {
+    url:'/settings',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/settings.html',
+        controller: 'menuCtrl'
+      }
+    }
+  })
+
+  .state('menu.password', {
+    url: '/password',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/password.html',
+        controller: 'loginCtrl'
+      }
+    }
+  })
+
   .state('login', {
       url: '/login',
       templateUrl: 'templates/login.html',
       controller: 'loginCtrl'
+  })
+
+  .state('registration', {
+      url: '/registration',
+      templateUrl: 'templates/registration.html',
+      controller: 'registrationCtrl'
   })
 
   .state('menu.orders', {

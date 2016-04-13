@@ -1,0 +1,25 @@
+<ion-view title="Registration" name="login-view">
+    <ion-content class="padding" ng-controller="registrationCtrl">
+
+        <div class="list">
+            <!-- <img class="full-image" src="images/lunchtracker_splash.png"> -->
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Fullname</span>
+                <input type="text" placeholder="e.g. Bill Anderson" ng-model="data.fullname">
+            </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Email</span>
+                <input type="text" placeholder="e.g. example@mail.com" ng-model="data.email">
+            </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Password</span>
+                <input type="password" placeholder="e.g. password" ng-model="data.new_password">
+            </label>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Retype Password</span>
+                <input type="password" placeholder="e.g. password" ng-model="data.retype_password">
+            </label>
+        </div>
+    <button class="button button-block button-dark" ng-click="registration()">Register</button>
+    </ion-content>
+</ion-view>

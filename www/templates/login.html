@@ -1,6 +1,8 @@
 <ion-view title="Login" name="login-view">
     <ion-content class="padding" ng-controller="loginCtrl">
+
         <div class="list">
+            <!-- <img class="full-image" src="images/lunchtracker_splash.png"> -->
             <label class="item item-input item-floating-label">
                 <span class="input-label">Username / Email</span>
                 <input type="text" placeholder="Username / Email" ng-model="data.email">
@@ -11,5 +13,6 @@
             </label>
         </div>
     <button class="button button-block button-dark" ng-click="login()">Log In</button>
+    <button class="button button-block button-dark" ng-click="register()">Registration</button>
     </ion-content>
 </ion-view>

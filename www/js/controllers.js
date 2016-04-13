@@ -173,93 +173,78 @@ my_app.controller('dashboardCtrl',['$scope', '$http', '$ionicPopup', '$state', '
        $scope.$broadcast('scroll.refreshComplete');
      });
   };
-  // $scope.doRefresh = function() {
-  //   $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid=6')
-  //    .success(function(resp) {
-  //      $scope.total_due = "BDT "+resp.data.count;
-  //      alert($scope.total_due);
-  //    })
-  //    .finally(function() {
-  //      // Stop the ion-refresher from spinning
-  //      $scope.$broadcast('scroll.refreshComplete');
-  //    });
-  // };
-
-  //$scope.menu = $scope.menu_one_id;
-  //alert($scope.menu_one_id);
 }]);
 
-// .controller('MyController', function($scope, $http) {
-//   $scope.items = [1,2,3];
-//   $scope.doRefresh = function() {
-//     $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid=6')
-//      .success(function(newItems) {
-//        $scope.items = newItems.count;
-//        $scope.total_due = "BDT " + newItems.count;
-//        alert($scope.total_due);
-//        $ionicHistory.clearCache();
-//         $state.go($state.current, {}, { reload: true });
-//      })
-//      .finally(function() {
-//        // Stop the ion-refresher from spinning
-//        $scope.$broadcast('scroll.refreshComplete');
-//      });
-//   };
-// })
+my_app.controller('menuCtrl',['$scope', '$state', function($scope, $state){
+  $scope.settings = function(){
+    $state.go('menu.settings');
+  };
+}]);
 
+my_app.controller('settingCtrl',['$scope', '$state', function($scope, $state){
+  $scope.navChangePass = function(){
+    $state.go('menu.password');
+  };
+}]);
 
-// .controller('dashboard_submit',['$scope', '$http', '$ionicPopup', '$timeout', function($scope, $http, $ionicPopup, $timeout) { 
-//   var data = null; 
-  
-//   $scope.submit = function(){
-//     var req = {
-//      method: 'POST',
-//      url: 'http://192.168.5.202/lunchmaker/api/place_order.php',
-//      headers: {
-//        'Content-Type': undefined
-//      },
-//      data: { uid: '6', mid: $scope.menu, foil: $scope.foil, status: 'unpaid' }
-//     }
-//     $http(req)
-//     .then(function(responses){
-//       var mypop = $ionicPopup.alert({
-//         title: 'Order Placed Successfully',
-//       });
-//       mypop.then(function(res){
-//         $state.go('app.fooDestinationView')
-//         console.log('Tapped!', res);
-//       });
-//       //$timeout(function() {mypop.close();},3000);
-//     });
-//   };
-// }])
+// MD. SHIHAB UDDIN you will be working on this part
 
+//SNIPPET STARTS HERE
 
-// .controller('PlaylistsCtrl', function($scope, $ionicPopup, $timeout) {
-//   $scope.data = {}
+my_app.controller('registrationCtrl',['$scope','$state', function($scope, $state){
+  //You Will be working on this platform
+}])
 
-//   // Triggered on a button click, or some other target
-//   $scope.showPopup = function() {
-//     var alertPopup = $ionicPopup.alert({
-//       title: 'Dont eat that!',
-//       template: 'It might taste good'
-//     });
-//     alertPopup.then(function(res) {
-//       console.log('Thank you for not eating my delicious ice cream cone');
-//     });
-//   };
-// })
+//SNIPPET ENDS HERE
 
-// .controller('dashboardCtrl-due', function($scope, $http) {
-// 	// $http.get('http://192.168.5.202/lunchmaker/api/total_unpaid.php?uid=6').then(function(resp) {
-// 	// $scope.total_due = "BDT "+resp.data.count;
-//  //    // For JSON responses, resp.data contains the result
-//  //  }, function(err) {
-//  //    console.error('ERR', err);
-// 	// $scope.val = "Error";
-//  //    // err.status will contain the status code
-//  //  })
-// })
+my_app.controller('passwordCtrl',['$scope', '$state', 'apiUrl', '$http','$ionicPopup', '$ionicHistory', function($scope, $state, apiUrl, $http, $ionicPopup, $ionicHistory){
+  user_id = window.localStorage.getItem('id');
+  $scope.change_password = function(){
+    if($scope.data.new_password==$scope.data.retype_password){
+      var req = apiUrl+"change_password.php?uid="+user_id+"&current_password="+$scope.data.current_pass+"&new_password="+$scope.data.new_password;
+      $http.get(req)
+      .then(function(resp) {
+        $scope.values = resp.data.result;
+        $scope.message = resp.data.message;
+        if($scope.values==1){
+          var mypop = $ionicPopup.alert({
+              title: 'Password Changed Successfully',
+              buttons: [{
+               text: '<b>Ok</b>',
+               type: 'button-dark'
+             }]
+           });
+          mypop.then(function(resp){
+            $ionicHistory.clearCache();
+            $state.go('login');
+            });
+        }
+        else{
+          var mypop = $ionicPopup.alert({
+              title: 'Password Not Changed Successfully',
+              buttons: [{
+               text: '<b>Ok</b>',
+               type: 'button-dark'
+             }]
+           });
+        }
+        // For JSON responses, resp.data contains the result
+      }, function(err) {
+        // err.status will contain the status code
+        alert(err);
+      })
+    }
+    else{
+      var mypop = $ionicPopup.alert({
+        title: 'New Password didn\'t matched',
+        buttons: [{
+         text: '<b>Ok</b>',
+         type: 'button-dark'
+       }]
+     });
+    }
+  }
+}]);
    
 my_app.controller('ordersCtrl', ['$scope', '$http', 'apiUrl', function($scope, $http, apiUrl) {
   var user_id = window.localStorage.getItem('id');
@@ -378,10 +363,13 @@ my_app.controller('loginCtrl',['$scope', '$http', '$ionicPopup', '$ionicHistory'
         $state.go('menu.dashboard');
       }
       else{
-        $ionicPopup.alert({
-          title: 'Log In failed!',
-          template: 'Please check your credential'
-        });
+        var mypop = $ionicPopup.alert({
+                title: 'Wrong Credential Entered',
+                buttons: [{
+                 text: '<b>Ok</b>',
+                 type: 'button-dark'
+               }]
+             });
       }
       // For JSON responses, resp.data contains the result
     }, function(err) {
@@ -389,37 +377,9 @@ my_app.controller('loginCtrl',['$scope', '$http', '$ionicPopup', '$ionicHistory'
       $scope.val = "Error";
       // err.status will contain the status code
     })
-    // LoginFactory.getAllUsers($scope.data.email, $scope.data.password)
-    // .success(function(responses){
-    //   $scope.val = responses;
-    //   alert($scope.val);
-    //   if($scope.val.status=='success'){
-    //     alert($scope.val.user_id);
-    //     window.localStorage.setItem('id',$scope.val.user_id);
-    //     $state.go('menu.dashboard');
-    //   }
-    //   else{
-    //     alert("Error");
-    //     var alertPopup = $ionicPopup.alert({
-    //       title: 'Log In failed!',
-    //       template: 'Please check your credential'
-    //     });
-    //   }
-    // })
-    // .error(function(responses){
-    //   $scope.err = responses;
-    //   alert($scope.err);
-    // });
-    // LoginService.loginUser($scope.data.email, $scope.data.password)
-    // .success(function(data){
-    //   $state.go('menu.dashboard');
-    // })
-    // .error(function(data){
-    //   var alertPopup = $ionicPopup.alert({
-    //     title: 'Log In failed!',
-    //     template: 'Please check your credential'
-    //   });
-    // });
+  }
+  $scope.register = function(){
+    $state.go('registration');
   }
 }]);
  
