@@ -10,6 +10,15 @@
 	    			Change Password
 	    		</a>
     		</div>
+            <li class="item item-toggle">
+                 {{notify}}
+                 <label class="toggle toggle-dark">
+                   <input type="checkbox" ng-model="myVar" ng-change="notificationChange()">
+                   <div class="track">
+                     <div class="handle"></div>
+                   </div>
+                 </label>
+              </li>
     	</div>
     </ion-content>
 

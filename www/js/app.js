@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services', 'app.directives'])
+angular.module('app', ['ionic','ionic.service.core', 'app.controllers', 'app.routes', 'app.services', 'app.directives'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -18,5 +18,33 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    var push = new Ionic.Push({
+      "onNotification": function(notification) {
+        alert(notification.title);
+      },
+      "pluginConfig": {
+        "android": {
+          "iconColor": "#0000FF",
+          "sound": true
+        }
+      }
+    });
+    // var io = Ionic.io();
+    // var push = new Ionic.Push({
+    //   "onNotification": function(notification) {
+    //     alert(notification.title);
+    //   },
+    //   "pluginConfig": {
+    //     "android": {
+    //       "iconColor": "#0000FF",
+    //       "sound": true
+    //     }
+    //   }
+    // });
+   
+    // var callback = function(data) {
+    //   alert(data.token);
+    // };
+    // push.register(callback);
   });
 })

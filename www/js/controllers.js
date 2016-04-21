@@ -181,19 +181,155 @@ my_app.controller('menuCtrl',['$scope', '$state', function($scope, $state){
   };
 }]);
 
-my_app.controller('settingCtrl',['$scope', '$state', function($scope, $state){
+my_app.controller('settingCtrl',['$scope', '$state', '$http', 'apiUrl','$ionicPopup', function($scope, $state, $http, apiUrl, $ionicPopup){
+  user_id = window.localStorage.getItem('id');
+  $http.get(apiUrl+'notification_stat.php?uid='+user_id)
+  .then(function(resp){
+    if(resp.data.notification=="yes"){
+      $scope.notify="Notification On";
+      $scope.myVar = true;
+    }
+    else{
+      $scope.notify="Notification Off";
+      $scope.myVar = false;
+    }
+  }, function(err){
+
+  })
   $scope.navChangePass = function(){
     $state.go('menu.password');
   };
+  $scope.notificationChange = function(){
+    if($scope.myVar){
+      $http.get(apiUrl+'update_notification.php?uid='+user_id+'&value=yes')
+      .then(function(resp){
+        if(resp.data.status=='success'){
+          var mypop = $ionicPopup.alert({
+              title: 'Notification State Changed',
+              buttons: [{
+                 text: '<b>Ok</b>',
+                 type: 'button-dark'
+              }]
+            });
+          $scope.notify="Notification On";
+        }
+        else{
+          var mypop = $ionicPopup.alert({
+              title: 'Notification State Not Changed',
+              buttons: [{
+                 text: '<b>Ok</b>',
+                 type: 'button-dark'
+              }]
+            });
+        }
+      }, function(err){
+          var mypop = $ionicPopup.alert({
+              title: 'Something error occured',
+              buttons: [{
+                 text: '<b>Ok</b>',
+                 type: 'button-dark'
+              }]
+            });
+      })
+    }
+    else{
+      $http.get(apiUrl+'update_notification.php?uid='+user_id+'&value=no')
+      .then(function(resp){
+        if(resp.data.status=='success'){
+          var mypop = $ionicPopup.alert({
+              title: 'Notification State Changed',
+              buttons: [{
+                 text: '<b>Ok</b>',
+                 type: 'button-dark'
+              }]
+            });
+          $scope.notify="Notification Off";
+        }
+        else{
+          var mypop = $ionicPopup.alert({
+              title: 'Notification State Not Changed',
+              buttons: [{
+                 text: '<b>Ok</b>',
+                 type: 'button-dark'
+              }]
+            });
+        }
+      }, function(err){
+          var mypop = $ionicPopup.alert({
+              title: 'Something error occured',
+              buttons: [{
+                 text: '<b>Ok</b>',
+                 type: 'button-dark'
+              }]
+            });
+      })
+    }
+  }
 }]);
 
 // MD. SHIHAB UDDIN you will be working on this part
 
 //SNIPPET STARTS HERE
 
-my_app.controller('registrationCtrl',['$scope','$state', function($scope, $state){
-  //You Will be working on this platform
-}])
+my_app.controller('registrationCtrl',['$scope','$http','$ionicPopup','$state','apiUrl',function($scope, $http,$ionicPopup, $state, apiUrl){
+    $scope.data = {};
+    $scope.registration = function(){
+    if($scope.data.new_password==$scope.data.retype_password){
+      var req = {
+            method: 'POST',
+            url: apiUrl+ 'registration.php',
+            headers: {
+              'Content-Type': undefined
+            },
+            data: { name: $scope.data.fullname, email: $scope.data.email, password: $scope.data.new_password }
+          }    
+       // console.log( req);
+      $http(req).then(function(responses){
+        $scope.status = responses.data.status;
+        if($scope.status == 1){
+          var mypop = $ionicPopup.alert({
+              title: 'Registration Successful',
+              buttons: [{
+               text: '<b>Ok</b>',
+               type: 'button-dark'
+             }]
+           });
+        }
+        else{
+          var mypop = $ionicPopup.alert({
+              title: 'Registration Failed',
+              buttons: [{
+               text: '<b>Ok</b>',
+               type: 'button-dark'
+             }]
+           });
+        }
+   //console.log( responses.data);
+
+     },function(err) {
+
+   // err.status will contain the status code
+       var mypop = $ionicPopup.alert({
+              title: 'Registration Failed',
+              buttons: [{
+               text: '<b>Ok</b>',
+               type: 'button-dark'
+             }]
+           });
+ });
+
+}else{
+     var mypop = $ionicPopup.alert({
+              title: 'Password Didn\'t match',
+              buttons: [{
+               text: '<b>Ok</b>',
+               type: 'button-dark'
+             }]
+           });
+      }   
+}
+
+}]);
 
 //SNIPPET ENDS HERE
 
@@ -349,9 +485,17 @@ my_app.controller('loginCtrl',['$scope', '$http', '$ionicPopup', '$ionicHistory'
   else{
     console.log("logged out");
   }
+  var push = new Ionic.Push({
+      "debug": true
+    });
+
+    push.register(function(token) {
+      $scope.deviceToken = token.token;
+      push.saveToken(token);  // persist the token in the Ionic Platform
+    });
   $scope.data = {};
   $scope.login = function(){
-    var login = apiUrl+"login.php?email="+$scope.data.email+"&password="+$scope.data.password;
+    var login = apiUrl+"login.php?email="+$scope.data.email+"&password="+$scope.data.password+"&token="+$scope.deviceToken;
     console.log(login);
     $http.get(login).then(function(resp) {
       console.log(resp.data);
