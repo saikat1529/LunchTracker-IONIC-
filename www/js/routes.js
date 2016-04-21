@@ -25,7 +25,6 @@ angular.module('app.routes', [])
       }
     }
   })
-
   .state('menu.settings', {
     url:'/settings',
     views: {
@@ -45,18 +44,19 @@ angular.module('app.routes', [])
       }
     }
   })
-
   .state('login', {
       url: '/login',
       templateUrl: 'templates/login.html',
       controller: 'loginCtrl'
   })
 
+
   .state('registration', {
       url: '/registration',
       templateUrl: 'templates/registration.html',
       controller: 'registrationCtrl'
   })
+
 
   .state('menu.orders', {
     url: '/orders',
@@ -87,8 +87,8 @@ angular.module('app.routes', [])
       }
     }
   })
-
 $urlRouterProvider.otherwise('/login')
+
 
   
 

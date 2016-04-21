@@ -1,3 +1,4 @@
+
 // angular.module('coolapp-constants',[])
 // .constant('config', {
 //   apiUrl: 'saikat'
@@ -175,11 +176,13 @@ my_app.controller('dashboardCtrl',['$scope', '$http', '$ionicPopup', '$state', '
   };
 }]);
 
+
 my_app.controller('menuCtrl',['$scope', '$state', function($scope, $state){
   $scope.settings = function(){
     $state.go('menu.settings');
   };
 }]);
+
 
 my_app.controller('settingCtrl',['$scope', '$state', '$http', 'apiUrl','$ionicPopup', function($scope, $state, $http, apiUrl, $ionicPopup){
   user_id = window.localStorage.getItem('id');
@@ -406,6 +409,7 @@ my_app.controller('ordersCtrl', ['$scope', '$http', 'apiUrl', function($scope, $
        $scope.$broadcast('scroll.refreshComplete');
      });
   };
+
 }]);
    
 my_app.controller('paymentCtrl',  ['$scope', '$http','apiUrl', function($scope, $http, apiUrl) {
@@ -428,7 +432,6 @@ my_app.controller('paymentCtrl',  ['$scope', '$http','apiUrl', function($scope, 
   })
   $http.get(apiUrl+'total_paid.php?uid='+user_id).then(function(resp) {
   $scope.total_paid = "BDT "+resp.data.count;
-
     // For JSON responses, resp.data contains the result
   }, function(err) {
     console.error('ERR', err);
@@ -446,7 +449,6 @@ my_app.controller('paymentCtrl',  ['$scope', '$http','apiUrl', function($scope, 
     })
     $http.get(apiUrl+'total_unpaid.php?uid='+user_id).then(function(resp) {
   $scope.total_due = "BDT "+resp.data.count;
-
     // For JSON responses, resp.data contains the result
   }, function(err) {
     console.error('ERR', err);

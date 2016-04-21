@@ -5,6 +5,7 @@
             on-refresh="doRefresh()">
         </ion-refresher>
         <div class="card" ng-app="myApp">
+<<<<<<< HEAD
             <div class="item item-divider" style="background: #444444; color: #ffffff;">
                 <strong>Total Spent</strong>
             </div>
@@ -26,6 +27,21 @@
             </div>
             <div class="item item-text-wrap">
                 <h1 style="text-align: center; color: #444444;">{{total_due}}</h1>
+=======
+            <div class="item item-divider">
+                <strong>Total Paid</strong>
+            </div>
+            <div class="item item-text-wrap">
+                <h1 style="text-align: center">{{total_paid}}</h1>
+            </div>
+        </div>
+        <div class="card" ng-app="myApp">
+            <div class="item item-divider">
+                <strong>Total Due</strong>
+            </div>
+            <div class="item item-text-wrap">
+                <h1 style="text-align: center">{{total_due}}</h1>
+>>>>>>> 033bd3b868ecd3c7c44126356c699d8c3bdd6f63
             </div>
         </div>
     </ion-content>
